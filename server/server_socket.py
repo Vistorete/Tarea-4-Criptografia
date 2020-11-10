@@ -10,12 +10,16 @@ import sqlite3, os
 import pickle
 
 DB_PATH = r'.\sqlite-tools-win32-x86-3330000\database.db'
+
 table_statement = '''CREATE TABLE IF NOT EXISTS hashes(
                         id integer PRIMARY KEY,
-                        hash_ascii text NOT NULL); '''
-                        
-table_delete = '''DROP TABLE IF EXIST hashes;'''
-                        
+                        hash_ascii text NOT NULL); '''                        
+
+table_delete = '''DROP TABLE hashes;'''
+
+
+    
+             
 if __name__ == "__main__":
     #### Conexion a la BD #############
     db = sqlite3.connect(DB_PATH)
@@ -23,9 +27,9 @@ if __name__ == "__main__":
     if db:
         cursor.execute(table_delete)
         cursor.execute(table_statement)
-    
 
-    db.close()
+
+    
     ####################################
     
     ########### Inicia el servidor ###########
@@ -51,10 +55,8 @@ if __name__ == "__main__":
     cliente.send(str(public_key).encode())
     cliente.send(str(X0).encode())
     
-
     print("Listo para enviar llave publica")
-    cliente.send(str(public_key).encode())
-    cliente.send(str(X0).encode())
+
 
     ############################################
     
@@ -63,6 +65,8 @@ if __name__ == "__main__":
     HEADERSIZE = 10
     full_msg = b''
     new_msg = True
+    table_id = 0
+    
     while True:
         msg = cliente.recv(4096)
         if new_msg:
@@ -85,6 +89,10 @@ if __name__ == "__main__":
             print("mensaje descifrado (ASCII):",bin_toAscii(decrypted))
             new_msg = True
             full_msg = b""
+            table_insert = f'INSERT INTO hashes (id, hash_ascii) VALUES ({table_id}, \'{bin_toAscii(decrypted)}\');'
             
-            
-            ############# Almacena el mensaje desencriptado en
+            cursor.execute( table_insert)
+            db.commit()
+            table_id += 1
+            ############# Almacena el mensaje desencriptado en ######
+    db.close()

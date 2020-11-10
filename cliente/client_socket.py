@@ -37,8 +37,6 @@ if __name__ == "__main__":
         print(msg)
         server.send(msg)
         time.sleep(0.2)
-        # xd = server.recv(4096)
-        time.sleep(0.1)
     print('stop')
     # server.send('stop'.encode())
     # xd = server.recv(4096)
