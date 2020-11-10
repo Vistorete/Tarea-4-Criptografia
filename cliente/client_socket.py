@@ -29,14 +29,14 @@ if __name__ == "__main__":
     server.send('start'.encode())
     HEADERSIZE = 10
     for line in Lines:
-        
-        hash = line.strip()
+        hash = line.strip() # elimina el \n
         encrypted = encrypt(hash, X0, key)
         msg = pickle.dumps(encrypted)
         msg = bytes(f"{len(msg):<{HEADERSIZE}}", 'utf-8')+msg
         print(msg)
         server.send(msg)
-        time.sleep(0.2)
+        server.recv(1024)
+        time.sleep(0.1)
     print('stop')
     # server.send('stop'.encode())
     # xd = server.recv(4096)

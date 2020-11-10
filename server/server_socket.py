@@ -66,33 +66,38 @@ if __name__ == "__main__":
     full_msg = b''
     new_msg = True
     table_id = 0
-    
-    while True:
-        msg = cliente.recv(4096)
-        if new_msg:
-            # print("new msg len:",msg[:HEADERSIZE])
-            msglen = int(msg[:HEADERSIZE])
-            new_msg = False
-
-        # print(f"full message length: {msglen}")
-
-        full_msg += msg
-
-        # print(len(full_msg))
+    try:
         
-        if len(full_msg)-HEADERSIZE == msglen:
-            # print("full msg recvd")
-            # print(full_msg[HEADERSIZE:])
-            encrypted = pickle.loads(full_msg[HEADERSIZE:])
-            print("mensaje cifrado:", encrypted)
-            decrypted = decrypt(p,q,encrypted)
-            print("mensaje descifrado (ASCII):",bin_toAscii(decrypted))
-            new_msg = True
-            full_msg = b""
-            table_insert = f'INSERT INTO hashes (id, hash_ascii) VALUES ({table_id}, \'{bin_toAscii(decrypted)}\');'
+        while True:
+            msg = cliente.recv(4096)
+            if new_msg:
+                # print("new msg len:",msg[:HEADERSIZE])
+                msglen = int(msg[:HEADERSIZE])
+                new_msg = False
+
+            # print(f"full message length: {msglen}")
+
+            full_msg += msg
+
+            # print(len(full_msg))
             
-            cursor.execute( table_insert)
-            db.commit()
-            table_id += 1
-            ############# Almacena el mensaje desencriptado en ######
-    db.close()
+            if len(full_msg)-HEADERSIZE == msglen:
+                # print("full msg recvd")
+                # print(full_msg[HEADERSIZE:])
+                encrypted = pickle.loads(full_msg[HEADERSIZE:])
+                print("mensaje cifrado:", encrypted)
+                decrypted = decrypt(p,q,encrypted)
+                print("mensaje descifrado (ASCII):",bin_toAscii(decrypted))
+                new_msg = True
+                full_msg = b""
+                table_insert = f'INSERT INTO hashes (id, hash_ascii) VALUES ({table_id}, \'{bin_toAscii(decrypted)}\');'
+                
+                cursor.execute(table_insert)
+                db.commit()
+                table_id += 1
+                cliente.send("ok".encode())
+                ############# Almacena el mensaje desencriptado en ######
+    except:
+        db.close()
+        print(f"total elementos insertaods {table_id + 1}")
+    
