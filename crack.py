@@ -8,6 +8,7 @@ def crack(hashed_words, dictionary, mode = 0):
     mode = 0:       MD5
     mode = 10:      MD5 + Salt
     mode = 1000:    NTLM
+    mode = 1800:    SHA-512
     """
     hashcat = r'E:\Users\Victor\Documents\GitHub\Tarea-4-Criptografia\hashcat-6.1.1\hashcat.exe'
     output = r'E:\Users\Victor\Documents\GitHub\Tarea-4-Criptografia\cracked_output.txt'
