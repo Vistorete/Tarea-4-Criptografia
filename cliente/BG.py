@@ -149,8 +149,10 @@ if __name__ == "__main__":
     X0 =159201 
     hash= 'hola mundo'
 
-    key = key_generation(p,q)
+    key = public_key_generation(p,q)
     encrypted = encrypt(hash,X0,key)
     decrypted = decrypt(p,q,encrypted)
     print("encrypted:",encrypted)
-    print("decrypted:",decrypted)
+    print("decrypted:",bin_toAscii(decrypted))
+
+

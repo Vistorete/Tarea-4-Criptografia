@@ -30,6 +30,7 @@ if __name__ == "__main__":
     HEADERSIZE = 10
     for line in Lines:
         hash = line.strip() # elimina el \n
+        print("hash:", hash)
         encrypted = encrypt(hash, X0, key)
         msg = pickle.dumps(encrypted)
         msg = bytes(f"{len(msg):<{HEADERSIZE}}", 'utf-8')+msg

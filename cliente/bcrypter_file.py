@@ -14,12 +14,6 @@ def gen_hash_from_file(path_file, salt = bcrypt.gensalt(), writer = None):
             writer.write(hashed.decode()+'\n')
     pass
 
-
-
-
-
-
-
 if __name__ == "__main__":
     # salt = bcrypt.gensalt(rounds=5)
     start_time = datetime.datetime.now() # tiempo inicial

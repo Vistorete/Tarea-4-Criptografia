@@ -91,7 +91,6 @@ if __name__ == "__main__":
                 new_msg = True
                 full_msg = b""
                 table_insert = f'INSERT INTO hashes (id, hash_ascii) VALUES ({table_id}, \'{bin_toAscii(decrypted)}\');'
-                
                 cursor.execute(table_insert)
                 db.commit()
                 table_id += 1
@@ -99,5 +98,5 @@ if __name__ == "__main__":
                 ############# Almacena el mensaje desencriptado en ######
     except:
         db.close()
-        print(f"total elementos insertaods {table_id + 1}")
+        print(f"total elementos insertados {table_id}")
     
